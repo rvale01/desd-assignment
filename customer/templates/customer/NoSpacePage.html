@@ -1,0 +1,6 @@
+{% include "customer/Base.html" with css_file='customer/showings.css' %}
+    {% block content %}
+        <h3>There is no space left for this show!</h3>
+        <h3>Try to go back and choose another day/time</h3>
+        <button onclick="window.location.href=window.location.origin+'/customer/select-date-showings'">Back</button>
+    {% endblock %}    

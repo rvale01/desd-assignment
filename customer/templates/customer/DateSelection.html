@@ -1,0 +1,20 @@
+{% include "customer/Base.html" with css_file='customer/showings.css' %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+        <select name="date" onchange="this.form.submit()">
+            <option disabled {% if not date %}selected{% endif %}>Select</option>
+            {% for key in timetable %}
+                <option value="{{key|date:'Y-m-d'}}"  {% if date == key|date:'Y-m-d' %}selected{% endif %}>{{key}}</option>
+            {% endfor %}
+        </select>
+
+        <select name="time" onchange="this.form.submit()" {% if not date %}hidden{% endif %}>
+            <option disabled selected>Select</option>
+            {% for key in times %}
+                <option value="{{key|time:'H:i'}}">{{key|time:'H:i'}}</option>
+            {% endfor %}
+        </select>
+</form>
+{% endblock %}   

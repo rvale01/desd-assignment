@@ -1,0 +1,12 @@
+{% include "customer/Base.html" with css_file='customer/showings.css' %}
+    {% block content %}
+        <div class="showings_list">
+            {% for showing in showings %}
+                <div class="showing_container" onclick="window.location.href=window.location.origin+'/customer/showing_details/{{ showing.film_id_id}}'">
+                    <h3>{{ showing.film_id}}</h3>
+                    <td>{{ showing.date | date:'d M Y' }}</td>
+                    <td>at {{ showing.time | time:'H:i:s' }}</td>
+                </div>
+            {% endfor %}
+        </div>
+    {% endblock %}    

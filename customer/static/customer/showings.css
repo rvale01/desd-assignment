@@ -1,0 +1,15 @@
+.showing_container {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    padding: 10px
+}
+
+.showings_list {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 15px;
+}
+
+.showing_container > h3 {
+    margin-top: 5px;
+}

@@ -1,0 +1,39 @@
+<head>
+    <meta charset="utf-8"/>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'registration/base.css' %}"/>
+  </head>
+  {% block content %}
+  
+  {% if form.errors %}
+  <p>Your username and password didn't match. Please try again.</p>
+  {% endif %}
+  
+  <!-- {% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+  {% endif %} -->
+  
+  {% if user.is_authenticated %}
+
+  {% else %}
+    <form method="post" action="{% url 'login' %}">
+      <h1>Login</h1>
+    {% csrf_token %}
+    
+    {{ form.username.label_tag }}
+    {{form.username}}
+    
+    {{ form.password.label_tag }}
+    {{form.password}}
+    
+    <button type="submit" value="login">Submit</button>
+    <input type="hidden" name="next" value="{{ next }}">
+    </form>
+  {% endif %}
+  
+  {% endblock %}

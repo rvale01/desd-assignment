@@ -1,0 +1,10 @@
+{% extends "general/base.html" %}
+{% block content %}
+<form method="post" action="booking-confirmation/{{showing_id}}">
+    {% csrf_token %}
+    <input type="number" min="0" name="adults" value="0"/>
+    <input type="number" min="0" name="students" value="0"/>
+    <input type="number" min="0" name="children" value="0"/>
+    <button onclick="this.form.submit()">Book now</button>
+</form>
+{% endblock %}
