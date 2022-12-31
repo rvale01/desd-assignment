@@ -2,8 +2,10 @@ from django.http import JsonResponse
 from .models import Showing, Film
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-
+import stripe
 from datetime import datetime
+from django.urls import resolve
+from .models import Booking
 
 # TODO: split all the functions in different files
 @login_required
@@ -83,7 +85,7 @@ def select_tickets(request, showing_id):
                 request,
                 'customer/TicketsSelection.html',
                 {
-                    showing_id
+                    'showing_id': showing_id
                 }
             )
 
@@ -110,16 +112,22 @@ def booking_review(request, showing_id):
         tot_people = adults + children + students
         total = get_total(adults, children, students)
 
+        # Setting values in the session -> these will be used to save them in the db
+        request.session['adults'] = adults
+        request.session['children'] = children
+        request.session['students'] = students
+        request.session['showing_id'] = showing_id
+
         if(showing.available_seats >= tot_people):
             return render(
             request,
             'customer/BookingReview.html',
             {
-                students,
-                adults, 
-                children,
-                showing_id,
-                total
+                'students': students,
+                'adults': adults, 
+                'children': children,
+                'showing_id': showing_id,
+                'total': total
             }
         )
         else:
@@ -140,20 +148,31 @@ def payment(request):
         students = int(request.POST.get('students'))
         
         tot_people = adults + children + students
-        total = get_total(adults, children, students)
-
-        if(showing.available_seats >= tot_people):
-            return render(
-            request,
-            'customer/BookingReview.html',
-            {
-                students,
-                adults, 
-                children,
-                showing_id,
-                total
-            }
+        print("before")
+        stripe.api_key = 'sk_test_51ML6GvA5JuwZl2aDVTNJ2ITAXhbXiGWTJTKbvQVs0eDqnMOn9GTjOB46QGUgR3Ad2kZ664yHFI1OCG0sAneQZyln00n8Zu12I7'
+        response = stripe.checkout.Session.create(
+            mode="payment",
+            line_items=[
+                {
+                "price": "price_1ML6TgA5JuwZl2aD5mmeqnog",
+                "quantity": adults,
+                },
+                {
+                "price": "price_1ML6TEA5JuwZl2aDcUXhOsle",
+                "quantity": students,
+                },
+                {
+                "price": "price_1ML6TzA5JuwZl2aD4tubjoPl",
+                "quantity": children,
+                },
+            ],
+            success_url='http://127.0.0.1:8000/customer/success_page/{CHECKOUT_SESSION_ID}',
+            cancel_url= 'http://127.0.0.1:8000',
         )
+
+        print("okok", response.url)
+        if(showing.available_seats >= tot_people):
+            return redirect(response.url)
         else:
             #display error page
             return render(
@@ -163,5 +182,26 @@ def payment(request):
     else:
         return render(
             request,
-            'customer/Payment.html'
+            'customer/NoSpacePage.html'
+        )
+
+
+def success_page(request, checkout_id):
+    adults = request.session.get('adults')
+    children = request.session.get('children')
+    students = request.session.get('students')
+    total = get_total(adults=adults, children=children, students=students)
+    showing_id = request.session.get('showing_id')
+    
+    total_people = adults + children + students
+    booking = Booking(showing_id = showing_id, quantity = total_people, total = total, customer = request.user.id)
+    
+    showing = Showing.objects.get(pk=showing_id)
+    showing.available_seats = showing.available_seats - total_people
+    showing.save(update_fields=['available_seats'])
+    
+    booking.save()
+    return render(
+            request,
+            'customer/SuccessPage.html'
         )

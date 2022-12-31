@@ -1,8 +1,9 @@
 from django import forms
-from .models import Showing 
+from .models import Booking 
 
 #TODO: Ticket -> Student, Child, Adult
-class DateSelectionForm(forms.ModelForm):
+
+class Bookingform(forms.ModelForm):
     class Meta:
-        model = Showing
-        fields = ("date", "time",)   
+        model = Booking
+        fields=('showing', 'quantity', 'total', 'customer',)
