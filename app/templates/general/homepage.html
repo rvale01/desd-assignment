@@ -1,0 +1,25 @@
+{% extends "general/base.html" %}
+{% block content %}
+    <h1>
+        Homepage
+    </h1>
+
+    <p>Welcome on UWEFlix!</p>
+    <p>The new and improved cinema booking system</p>
+
+    {% if user.is_authenticated %}
+        <button onclick="window.location.href=window.location.origin+'/customer/select-date-showings'">
+            Book now
+        </button>
+        <button onclick="window.location.href=window.location.origin+'/accounts/logout/'">
+            Logout
+        </button>
+    {% else %}
+        <button>
+            Register
+        </button>
+        <button onclick="window.location.href=window.location.origin+'/accounts/login/'">
+            Login
+        </button>
+    {% endif %}
+{% endblock %}

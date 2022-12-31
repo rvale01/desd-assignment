@@ -1,0 +1,20 @@
+:root {
+    --border-radius-sm: 0.2rem;
+    --padding-sm: 1rem;
+    --padding-md: 2rem;
+    --border-color: #c2c8d0
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif
+}
+
+button {
+    background-color: #10a37f;
+    border-radius: var(--border-radius-sm);
+    padding: var(--padding-sm) var(--padding-md);
+    text-align: center;
+    border: none;
+    color: white;
+    cursor: pointer;
+}

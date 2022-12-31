@@ -1,0 +1,16 @@
+{% include "customer/Base.html" with css_file='customer/showings.css' %}
+    {% block content %}
+    <form method="post" action="window.location.href=window.location.origin+'/customer/payment/'">
+        <h3>The total is: {{total}}</h3>
+        <h1>Students tickets: {{students}} x 6 = {% widthratio students 1 6 %} </h1>
+        <h1>Children tickets: {{children}} x 4 = {% widthratio students 1 4 %}</h1>
+        <h1>Adults tickets: {{adults}} x 8 = {% widthratio students 1 8 %}</h1>
+
+        <h3>If you think everything is correct</h3>
+        <input hidden value="{{students}}" name="students"/>
+        <input hidden value="{{children}}" name="children"/>
+        <input hidden value="{{adults}}" name="adults"/>
+        <input hidden value="{{showing_id}}" name="showing_id"/>
+        <button>Pay</button>
+    </form>
+    {% endblock %}    
