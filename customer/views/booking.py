@@ -4,7 +4,6 @@ from ..models import Booking, Showing, Film
 from .tickets import get_total
 from ..forms import TicketsForm
 
-# DONE !!!
 @login_required
 def showings_list(request, date, time):
     showings = Showing.objects.filter(date=date, time=time)
@@ -43,7 +42,6 @@ def get_showings_dates():
     return timetable
 
 
-# DONE !!!
 @login_required
 def date_selection(request):
     # GET request -> first time the page is loaded -> show the page with a select where the user is prompt to select a date 
