@@ -8,9 +8,11 @@ def showings_list(request, date, time):
     showings = Showing.objects.filter(date=date, time=time)
     return render(
         request,
-        'customer/ShowingsList.html',
+        'customer/showingsList.html',
         {
             'showings': showings,
+            'date': date,
+            'time': time
         }
     )
 

@@ -2,7 +2,8 @@
     --border-radius-sm: 0.2rem;
     --padding-sm: 1rem;
     --padding-md: 2rem;
-    --border-color: #c2c8d0
+    --border-color: #c2c8d0;
+    --primary-color: #10a37f;
 }
 
 body {
@@ -10,7 +11,7 @@ body {
 }
 
 button {
-    background-color: #10a37f;
+    background-color: var(--primary-color);
     border-radius: var(--border-radius-sm);
     padding: var(--padding-sm) var(--padding-md);
     text-align: center;

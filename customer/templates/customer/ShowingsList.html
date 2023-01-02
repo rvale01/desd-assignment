@@ -1,5 +1,6 @@
 {% include "customer/Base.html" with css_file='customer/showings.css' %}
     {% block content %}
+    <h1>Available Showings on {{date}} at {{time}}</h1>
         <div class="showings_list">
             {% for showing in showings %}
                 <div class="showing_container" onclick="window.location.href=window.location.origin+'/customer/showing_details/{{ showing.film_id_id}}'">
