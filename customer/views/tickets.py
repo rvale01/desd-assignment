@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-    
+from ..forms import TicketsForm
+
 # Function used to get the total amount of the booking based on the number of tickets for adults, children, and students
 def get_total(adults: int, children: int, students: int):
     tot_cost = 0
@@ -17,10 +18,12 @@ def get_total(adults: int, children: int, students: int):
 @login_required
 def select_tickets(request, showing_id):
     if(request.method == "GET"): # Page where the user needs to select the tickets
+        form = TicketsForm()
         return render(
                 request,
-                'customer/TicketsSelection.html',
+                'customer/ticketsSelection.html',
                 {
-                    'showing_id': showing_id
+                    'showing_id': showing_id,
+                    'form': form
                 }
             )

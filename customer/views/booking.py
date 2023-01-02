@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from ..models import Booking, Showing, Film
 from .tickets import get_total
+from ..forms import TicketsForm
 
 # DONE !!!
 @login_required
@@ -84,38 +85,39 @@ def date_selection(request):
 def booking_review(request, showing_id):
     if(request.method == "POST"):
         showing = Showing.objects.get(pk=showing_id)
+        form = TicketsForm(request.POST)
 
-        adults = int(request.POST.get('adults'))
-        children = int(request.POST.get('children'))
-        students = int(request.POST.get('students'))
-        
-        tot_people = adults + children + students
-        total = get_total(adults, children, students)
+        if(form.is_valid()):   
+            adults = form.cleaned_data['adults']
+            children = form.cleaned_data['children']
+            students = form.cleaned_data['students']
+            tot_people = adults + children + students
+            total = get_total(adults, children, students)
 
-        # Setting values in the session -> these will be used to save them in the db
-        request.session['adults'] = adults
-        request.session['children'] = children
-        request.session['students'] = students
-        request.session['showing_id'] = showing_id
+            # Setting values in the session -> these will be used to save them in the db
+            request.session['adults'] = adults
+            request.session['children'] = children
+            request.session['students'] = students
+            request.session['showing_id'] = showing_id
 
-        if(showing.available_seats >= tot_people):
-            return render(
-            request,
-            'customer/BookingReview.html',
-            {
-                'students': students,
-                'adults': adults, 
-                'children': children,
-                'showing_id': showing_id,
-                'total': total
-            }
-        )
-        else:
-            #display error page
-            return render(
+            if(showing.available_seats >= tot_people):
+                return render(
                 request,
-                'customer/NoSpacePage.html'
+                'customer/BookingReview.html',
+                {
+                    'students': students,
+                    'adults': adults, 
+                    'children': children,
+                    'showing_id': showing_id,
+                    'total': total
+                }
             )
+            else:
+                #display error page
+                return render(
+                    request,
+                    'customer/NoSpacePage.html'
+                )
 
 def success_page(request, checkout_id):
     adults = request.session.get('adults')

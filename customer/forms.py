@@ -1,10 +1,13 @@
 from django import forms
 
-# #TODO: Ticket -> Student, Child, Adult
-
-# class TicketsForm(forms.ModelForm):
-#     student = // integer
-#     child = // integer
-#     adult = // integer
-#     class Meta:
-#         fields=('showing', 'quantity', 'total', 'customer',)
+class TicketsForm(forms.Form):
+    students = forms.IntegerField(min_value=0)
+    children = forms.IntegerField(min_value=0)
+    adults = forms.IntegerField(min_value=0)
+    class Meta:
+        fields=('students', 'children', 'adults', )
+        labels = {
+            'students': "Students:",
+            "children": "Children:",
+            'adults': "Adults: " ,
+        }
