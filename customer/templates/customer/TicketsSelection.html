@@ -1,9 +1,15 @@
 {% extends "general/base.html" %}
 {% block content %}
 <form method="post" action="{% url 'booking_review' showing_id %}">
+    <h1>Select tickets</h1>
     {% csrf_token %}
+    <label for="adults">Adults:</label>
     <input type="number" min="0" name="adults" value="0"/>
+
+    <label for="adults">Students:</label>
     <input type="number" min="0" name="students" value="0"/>
+
+    <label for="adults">Children:</label>
     <input type="number" min="0" name="children" value="0"/>
     <button onclick="this.form.submit()">Book now</button>
 </form>
