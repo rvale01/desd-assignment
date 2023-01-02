@@ -1,16 +1,17 @@
 {% include "customer/Base.html" with css_file='customer/showings.css' %}
     {% block content %}
-        <div class="showings_list">
-                <div class="showing_container">
-                    <h3>{{ film.title}}</h3>
-                    <td>{{ showing.date | date:'d M Y' }}</td>
-                    <td>at {{ showing.time | time:'H:i:s' }}</td>
-                    <div>Plot: {{ film.description }}</div>
-                    <div>Age Rating: {{ film.age_rating }}</div>
-                </div>
+        <h1>Showing's details</h1>
+        <div class="showing_container">
+            <h3>{{ film.title}}</h3>
+            <p><b>On the:</b> {{ showing.date | date:'d M Y' }}</p>
+            <p><b>At:</b> {{ showing.time | time:'H:i:s' }}</p>
+            <p><b>Plot:</b> {{ film.description }}</p>
+            <p><b>Age Rating:</b> {{ film.age_rating }}</p>
         </div>
 
-        
-        <button>Back</button>
-        <button onclick="window.location.href=window.location.origin+'/customer/select_tickets/{{showing.pk}}'">Book Now!</button>
+        <div class="buttons_container">
+            <button>Back</button>
+            <button onclick="window.location.href=window.location.origin+'/customer/select_tickets/{{showing.pk}}'">Book Now!</button>
+        </div>
+    
     {% endblock %}    

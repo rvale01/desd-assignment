@@ -3,7 +3,7 @@
     <h1>Available Showings on {{date}} at {{time}}</h1>
         <div class="showings_list">
             {% for showing in showings %}
-                <div class="showing_container" onclick="window.location.href=window.location.origin+'/customer/showing_details/{{ showing.film_id_id}}'">
+                <div class="showing_container" onclick="window.location.href=window.location.origin+'/customer/showing_details/{{ showing.showing_id}}'">
                     <h3>{{ showing.film_id}}</h3>
                     <td>{{ showing.date | date:'d M Y' }}</td>
                     <td>at {{ showing.time | time:'H:i:s' }}</td>

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from ..models import Booking, Showing, Film
 from .tickets import get_total
 
+# DONE !!!
 @login_required
 def showings_list(request, date, time):
     showings = Showing.objects.filter(date=date, time=time)
@@ -17,12 +18,12 @@ def showings_list(request, date, time):
     )
 
 @login_required
-def showing_details(request, film_id):
-    showing = Showing.objects.get(pk=film_id)
-    film = Film.objects.get(pk=showing.pk)
+def showing_details(request, showing_id):
+    showing = Showing.objects.get(pk=showing_id) # getting the show based on the f
+    film = Film.objects.get(pk=showing.film_id_id)
     return render(
         request,
-        'customer/ShowingDetails.html',
+        'customer/showingDetails.html',
         {
             'showing': showing,
             'film': film
