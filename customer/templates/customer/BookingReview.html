@@ -1,10 +1,11 @@
-{% include "customer/Base.html" with css_file='customer/showings.css' %}
+{% include "customer/base.html" with css_file='customer/bookingReview.css' %}
     {% block content %}
-    <form method="post" action="window.location.href=window.location.origin+'/customer/payment/'">
-        <h3>The total is: {{total}}</h3>
-        <h1>Students tickets: {{students}} x 6 = {% widthratio students 1 6 %} </h1>
-        <h1>Children tickets: {{children}} x 4 = {% widthratio students 1 4 %}</h1>
-        <h1>Adults tickets: {{adults}} x 8 = {% widthratio students 1 8 %}</h1>
+    <form method="post" action="{% url 'payment' %}">
+        {% csrf_token %}
+        <h1>Your total is: £{{total}}</h3>
+        <p>Students tickets: {{students}} students x £6 = £{% widthratio students 1 6 %} </p>
+        <p>Children tickets: {{children}} children x £4 = £{% widthratio children 1 4 %}</p>
+        <p>Adults tickets: {{adults}} adults x £8 = £{% widthratio adults 1 8 %}</p>
 
         <h3>If you think everything is correct</h3>
         <input hidden value="{{students}}" name="students"/>

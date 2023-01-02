@@ -1,8 +1,13 @@
 from django import forms
-from .models import Showing 
 
-#TODO: Ticket -> Student, Child, Adult
-class DateSelectionForm(forms.ModelForm):
+class TicketsForm(forms.Form):
+    students = forms.IntegerField(min_value=0)
+    children = forms.IntegerField(min_value=0)
+    adults = forms.IntegerField(min_value=0)
     class Meta:
-        model = Showing
-        fields = ("date", "time",)   
+        fields=('students', 'children', 'adults', )
+        labels = {
+            'students': "Students:",
+            "children": "Children:",
+            'adults': "Adults: " ,
+        }

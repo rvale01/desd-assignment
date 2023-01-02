@@ -1,35 +1,31 @@
 <head>
     <meta charset="utf-8"/>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'registration/base.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'registration/index.css' %}"/>
   </head>
   {% block content %}
   
-  {% if form.errors %}
-  <p>Your username and password didn't match. Please try again.</p>
-  {% endif %}
-  
-  <!-- {% if next %}
     {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
+      <button onclick="window.location.href=window.location.origin+'/accounts/logout/'">
+        Logout
+      </button>
     {% else %}
-    <p>Please login to see this page.</p>
-    {% endif %}
-  {% endif %} -->
-  
-  {% if user.is_authenticated %}
-
-  {% else %}
-    <form method="post" action="{% url 'login' %}">
-      <h1>Login</h1>
+    <form method="post">
+      <h1>Register</h1>
     {% csrf_token %}
     
     {{ form.username.label_tag }}
-    {{form.username}}
-    
-    {{ form.password.label_tag }}
-    {{form.password}}
+    {{ form.username }}
+    {{form.errors.username}}
+
+    {{ form.password1.label_tag }}
+    {{ form.password1 }}
+    {{form.errors.password1}}
+
+    {{ form.password2.label_tag }}
+    {{ form.password2 }}
+    {{form.errors.password2}}
     
     <button type="submit" value="login">Submit</button>
     <input type="hidden" name="next" value="{{ next }}">

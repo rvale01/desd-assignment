@@ -18,6 +18,6 @@ class Showing(models.Model):
 class Booking(models.Model):
     booking_id = models.AutoField(primary_key=True)
     customer = models.CharField(max_length=200)
-    showing = models.ForeignKey(Showing, on_delete=models.CASCADE)
+    showing = models.ForeignKey(Showing, to_field='showing_id', on_delete=models.CASCADE)
     total = models.IntegerField()
     quantity = models.IntegerField()
