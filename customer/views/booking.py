@@ -103,7 +103,7 @@ def booking_review(request, showing_id):
             if(showing.available_seats >= tot_people):
                 return render(
                 request,
-                'customer/BookingReview.html',
+                'customer/bookingReview.html',
                 {
                     'students': students,
                     'adults': adults, 
@@ -136,5 +136,5 @@ def success_page(request, checkout_id):
     booking.save()
     return render(
             request,
-            'customer/SuccessPage.html'
+            'customer/successPage.html'
         )

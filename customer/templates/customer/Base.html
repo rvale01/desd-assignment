@@ -7,6 +7,10 @@
         <link rel="stylesheet" type="text/css" href="{% static '' %}{{css_file}}"/>
     </head>
 
+    <header>
+        <div onclick="window.location.href=window.location.origin+'/'">Home</div>
+        <div onclick="window.location.href=window.location.origin+'/accounts/logout/'">Logout</div>
+    </header>
     <body>
         {% block content %}
         {% endblock %}

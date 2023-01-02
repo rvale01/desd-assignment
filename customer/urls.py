@@ -13,10 +13,10 @@ urlpatterns += [
 # Booking Views
 urlpatterns += [
     path("success_page/<str:checkout_id>", success_page, name="payment"),
-    path("booking-review/<str:showing_id>", booking_review, name="booking_review"), #booking confirmation with id of booking, id of customer
+    path("booking_review/<str:showing_id>", booking_review, name="booking_review"), #booking confirmation with id of booking, id of customer
     path("showings/<str:date>/<str:time>", showings_list, name="showings_list"), 
     path("showing_details/<str:showing_id>", showing_details, name="showing details"), 
-    path("select-date-showings", date_selection, name="date_selection"),
+    path("select_date_showings", date_selection, name="date_selection"),
 ]
 
 # Tickets views
