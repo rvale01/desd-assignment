@@ -1,9 +1,10 @@
 from django import forms
-from .models import Booking 
 
-#TODO: Ticket -> Student, Child, Adult
+# #TODO: Ticket -> Student, Child, Adult
 
-class Bookingform(forms.ModelForm):
-    class Meta:
-        model = Booking
-        fields=('showing', 'quantity', 'total', 'customer',)
+# class TicketsForm(forms.ModelForm):
+#     student = // integer
+#     child = // integer
+#     adult = // integer
+#     class Meta:
+#         fields=('showing', 'quantity', 'total', 'customer',)

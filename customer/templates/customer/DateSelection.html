@@ -1,8 +1,11 @@
 {% include "customer/Base.html" with css_file='customer/showings.css' %}
 
 {% block content %}
+
 <form method="post">
+    <h1> Select date & time</h1>
     {% csrf_token %}
+        <label for="date">Date</label>
         <select name="date" onchange="this.form.submit()">
             <option disabled {% if not date %}selected{% endif %}>Select</option>
             {% for key in timetable %}
@@ -10,6 +13,7 @@
             {% endfor %}
         </select>
 
+        <label for="date">Time</label>
         <select name="time" onchange="this.form.submit()" {% if not date %}hidden{% endif %}>
             <option disabled selected>Select</option>
             {% for key in times %}

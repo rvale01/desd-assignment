@@ -1,13 +1,8 @@
-from django.http import JsonResponse
-from .models import Showing, Film
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-import stripe
-from datetime import datetime
-from django.urls import resolve
-from .models import Booking
+from ..models import Booking, Showing, Film
+from .tickets import get_total
 
-# TODO: split all the functions in different files
 @login_required
 def showings_list(request, date, time):
     showings = Showing.objects.filter(date=date, time=time)
@@ -18,7 +13,7 @@ def showings_list(request, date, time):
             'showings': showings,
         }
     )
-    
+
 @login_required
 def showing_details(request, film_id):
     showing = Showing.objects.get(pk=film_id)
@@ -32,6 +27,8 @@ def showing_details(request, film_id):
         }
     )
 
+
+
 def get_showings_dates():
     showings = Showing.objects.all()
     timetable = []
@@ -42,19 +39,21 @@ def get_showings_dates():
     return timetable
 
 
+# DONE !!!
 @login_required
 def date_selection(request):
-    # GET request -> first time the page is loaded
+    # GET request -> first time the page is loaded -> show the page with a select where the user is prompt to select a date 
+    # among the ones available
     if(request.method == "GET"):
         timetable = get_showings_dates()
         return render(
             request,
-            'customer/DateSelection.html',
+            'customer/dateSelection.html',
             {
                 'timetable': timetable
             }
         )
-    else: # POST request -> when the user clicks on the select or submits both options
+    else: # POST request -> when the user selects the date or selects the time
         if(request.POST.get('date') and not request.POST.get('time')):
             selected_date = request.POST.get('date')
             showings = Showing.objects.filter(date=selected_date)
@@ -65,7 +64,7 @@ def date_selection(request):
                     times.append(value.time)
             return render(
                 request,
-                'customer/DateSelection.html',
+                'customer/dateSelection.html',
                 {
                     'times': times,
                     'date': selected_date,
@@ -77,28 +76,6 @@ def date_selection(request):
             selected_time = request.POST.get('time')
             url = 'showings/'+selected_date+'/'+selected_time
             return redirect(url)
-    
-@login_required
-def select_tickets(request, showing_id):
-    if(request.method == "GET"): # GET Request -> Page where the user needs to select the tickets
-        return render(
-                request,
-                'customer/TicketsSelection.html',
-                {
-                    'showing_id': showing_id
-                }
-            )
-
-def get_total(adults: int, children: int, students: int):
-    tot_cost = 0
-    if(adults > 0):
-        tot_cost+= (8 * adults)
-    if(children > 0):
-        tot_cost+= (4 * children)
-    if(students > 0):
-        tot_cost+= (6 * students)
-    
-    return tot_cost
 
 @login_required
 def booking_review(request, showing_id):
@@ -136,55 +113,6 @@ def booking_review(request, showing_id):
                 request,
                 'customer/NoSpacePage.html'
             )
-
-@login_required
-def payment(request):
-    if(request.method == "POST"):
-        showing_id = request.POST.get('showing_id')
-        showing = Showing.objects.get(pk=showing_id)
-
-        adults = int(request.POST.get('adults'))
-        children = int(request.POST.get('children'))
-        students = int(request.POST.get('students'))
-        
-        tot_people = adults + children + students
-        print("before")
-        stripe.api_key = 'sk_test_51ML6GvA5JuwZl2aDVTNJ2ITAXhbXiGWTJTKbvQVs0eDqnMOn9GTjOB46QGUgR3Ad2kZ664yHFI1OCG0sAneQZyln00n8Zu12I7'
-        response = stripe.checkout.Session.create(
-            mode="payment",
-            line_items=[
-                {
-                "price": "price_1ML6TgA5JuwZl2aD5mmeqnog",
-                "quantity": adults,
-                },
-                {
-                "price": "price_1ML6TEA5JuwZl2aDcUXhOsle",
-                "quantity": students,
-                },
-                {
-                "price": "price_1ML6TzA5JuwZl2aD4tubjoPl",
-                "quantity": children,
-                },
-            ],
-            success_url='http://127.0.0.1:8000/customer/success_page/{CHECKOUT_SESSION_ID}',
-            cancel_url= 'http://127.0.0.1:8000',
-        )
-
-        print("okok", response.url)
-        if(showing.available_seats >= tot_people):
-            return redirect(response.url)
-        else:
-            #display error page
-            return render(
-                request,
-                'customer/NoSpacePage.html'
-            )
-    else:
-        return render(
-            request,
-            'customer/NoSpacePage.html'
-        )
-
 
 def success_page(request, checkout_id):
     adults = request.session.get('adults')
