@@ -7,7 +7,6 @@ from ..models import Showing
 @login_required
 def payment(request):
     if(request.method == "POST"):
-
         # Getting all the details from the form (the inputs in the template bookingReview are actually hidden, the only reason they are there is to 
         # get the data from one view to the other without using cache, cookies and avoiding using any memory )
         showing_id = request.POST.get('showing_id')
@@ -23,23 +22,27 @@ def payment(request):
         # Personal API KEY
         stripe.api_key = 'sk_test_51ML6GvA5JuwZl2aDVTNJ2ITAXhbXiGWTJTKbvQVs0eDqnMOn9GTjOB46QGUgR3Ad2kZ664yHFI1OCG0sAneQZyln00n8Zu12I7'
         
+        # passing the items to the stripe function, only if the quantity of the ticket is more than 0
+        items = []
+        if(adults > 0):
+            items += [{
+                "price": "price_1ML6TgA5JuwZl2aD5mmeqnog",
+                "quantity": adults,
+                }]
+        if(students > 0): 
+            items += [{
+                "price": "price_1ML6TEA5JuwZl2aDcUXhOsle",
+                "quantity": students,
+                }]
+        if(children > 0):
+            items += [{
+                "price": "price_1ML6TzA5JuwZl2aD4tubjoPl",
+                "quantity": children,
+                }]
         # Passing all the details to the stripe Session create function, which will return the url of a self hosted checkout
         response = stripe.checkout.Session.create(
             mode="payment",
-            line_items=[
-                {
-                "price": "price_1ML6TgA5JuwZl2aD5mmeqnog",
-                "quantity": adults,
-                },
-                {
-                "price": "price_1ML6TEA5JuwZl2aDcUXhOsle",
-                "quantity": students,
-                },
-                {
-                "price": "price_1ML6TzA5JuwZl2aD4tubjoPl",
-                "quantity": children,
-                },
-            ],
+            line_items=items,
             success_url='http://127.0.0.1:8000/customer/success_page/{CHECKOUT_SESSION_ID}',
             cancel_url= 'http://127.0.0.1:8000',
             payment_method_types = ['card']

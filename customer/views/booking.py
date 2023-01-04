@@ -101,7 +101,7 @@ def booking_review(request, showing_id):
         showing = Showing.objects.get(pk=showing_id)
         # Passing to the tickets form the request received
         form = TicketsForm(request.POST)
-
+        
         # Checking all the data inputted by the user is corret
         if(form.is_valid()):   
             # getting the details from the form
@@ -141,6 +141,17 @@ def booking_review(request, showing_id):
                     request,
                     'customer/NoSpacePage.html'
                 )
+        else:
+            render(
+                request,
+                'customer/ticketsSelection.html',
+                {
+                    'showing_id': showing_id,
+                    'form': form
+                }
+            )
+            
+        
 
 # This view is used after the user pays and the payment is successful, stripe will redirect the user to this page
 def success_page(request, checkout_id):
@@ -166,10 +177,10 @@ def success_page(request, checkout_id):
     booking.save()
 
     # Clearing all the values in the sessions
-    request.session['adults'] = None
-    request.session['children'] = children
-    request.session['students'] = students
-    request.session['showing_id'] = showing_id
+    request.session['adults'] = 0
+    request.session['children'] = 0
+    request.session['students'] = 0
+    request.session['showing_id'] = 0
 
     return render(
             request,

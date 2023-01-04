@@ -11,6 +11,7 @@ def homepage(request):
 
 # View to register a new customer (at the moment the only group available is the customer, eand all the registrations are of type customer)
 def registrationCustomer(request):  
+    form = CustomerCreationForm()  
     # If the user submits the form, this is saved, passed to the CustomerCreationForm and it's being checked if the form is valid
     if request.method == 'POST':  
         form = CustomerCreationForm(request.POST)  
@@ -20,9 +21,8 @@ def registrationCustomer(request):
         if form.is_valid():  
             form.save()  
             return redirect('/accounts/login')
-    else:  
-        # when the request.method is of type GET, the form is created and passed to the template
-        form = CustomerCreationForm()  
-        return render(request, 'registration/registration.html', {
-            'form':form  
-        })  
+        
+    # when the request.method is of type GET, the form is created and passed to the template
+    return render(request, 'registration/registration.html', {
+        'form':form  
+    })  
