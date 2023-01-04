@@ -1,7 +1,7 @@
 services:
   app_customer:
     build: .
-    entrypoint: ["./django-web-app-entrypoint.sh"]
+    entrypoint: ["./django-app-entrypoint.sh"]
     container_name: app_customer
     ports:
       - "8000:8000"
