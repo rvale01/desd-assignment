@@ -20,7 +20,7 @@ def showings_list(request, date, time):
 @login_required
 def showing_details(request, showing_id):
     showing = Showing.objects.get(pk=showing_id) # getting the show based on the f
-    film = Film.objects.get(pk=showing.film_id_id)
+    film = Film.objects.get(pk=showing.film_id)
     return render(
         request,
         'customer/showingDetails.html',

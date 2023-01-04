@@ -1,0 +1,27 @@
+services:
+  app_customer:
+    build: .
+    entrypoint: ["./django-web-app-entrypoint.sh"]
+    container_name: app_customer
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres-db
+
+
+  postgres-db:
+    image: postgres
+    container_name: postgres-db
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes: 
+      - .:/docker-entrypoint-initdb.d
+
+volumes:
+  db:
