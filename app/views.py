@@ -1,12 +1,31 @@
-from django.http import JsonResponse
+from django.contrib.auth.models import User  
 from django.shortcuts import render, redirect
 from .forms import CustomerCreationForm
+from django.contrib.auth import logout
+
 
 # View shown for the homepage
 def homepage(request):
     return render(
         request,
         'general/homepage.html'
+    )
+
+# View used to delete an account
+def delete_account(request):
+    # saving the username of the logged user
+    username = request.user.id
+    # getting the user from the list of users in the db
+    u = User.objects.get(username = username)
+
+    # logging out the user
+    logout(request)      
+
+    # deleting the user
+    u.delete()
+    return render(
+        request,
+        'registration/deleteAccount.html'
     )
 
 # View to register a new customer (at the moment the only group available is the customer, eand all the registrations are of type customer)
