@@ -13,10 +13,11 @@ def homepage(request):
 
 # View used to delete an account
 def delete_account(request):
+    print(request.user.id)
     # saving the username of the logged user
-    username = request.user.id
+    user_id = request.user.id
     # getting the user from the list of users in the db
-    u = User.objects.get(username = username)
+    u = User.objects.get(id = user_id)
 
     # logging out the user
     logout(request)      
