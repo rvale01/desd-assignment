@@ -114,14 +114,16 @@ def booking_review(request, showing_id):
 
             # calculating the total the user will have to pay. This is then showed in the template
             total = get_total(adults, children, students)
-
+            
             # If there is enough space, then the template is returned
             if(showing.available_seats >= tot_people):
+                print("Username is 2: ", request.user.id)
                 # Setting values in the session -> these will be used after the payment is confirmed to save them in the db
                 request.session['adults'] = adults
                 request.session['children'] = children
                 request.session['students'] = students
                 request.session['showing_id'] = showing_id
+                request.session['username'] = request.user.id
 
                 # Returning the template
                 return render(
@@ -154,11 +156,13 @@ def booking_review(request, showing_id):
         
 
 # This view is used after the user pays and the payment is successful, stripe will redirect the user to this page
+@login_required
 def success_page(request, checkout_id):
     # Getting values from the session
     adults = request.session.get('adults')
     children = request.session.get('children')
     students = request.session.get('students')
+    customer = request.session.get('username')
 
     # Calculating the total
     total = get_total(adults=adults, children=children, students=students)
@@ -166,7 +170,7 @@ def success_page(request, checkout_id):
 
     # And how many tickets were booked
     total_people = adults + children + students
-    booking = Booking(showing_id = showing_id, quantity = total_people, total = total, customer = request.user.id)
+    booking = Booking(showing_id = showing_id, quantity = total_people, total = total, customer = customer)
     
     # Updating just one field of the Showing table
     showing = Showing.objects.get(pk=showing_id)
@@ -177,6 +181,7 @@ def success_page(request, checkout_id):
     booking.save()
 
     # Clearing all the values in the sessions
+    request.session['username'] = None
     request.session['adults'] = 0
     request.session['children'] = 0
     request.session['students'] = 0

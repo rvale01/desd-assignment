@@ -34,3 +34,44 @@ The views are grouped in three different folders: booking, payment, and tickets.
 The templates used all extend the base.html template in the same folder.
 The static files are specific for each template which uses them. Also, each template extends the base.css file which can be found in the app/static folder.
 The urls grouped based on each view.
+
+
+# Flow
+<h3>Homepage</h3>
+The first page shown is the home page. 
+  - If the user is not logged, the Login and Registration buttons are show.
+  - If the user is logged, the Book Now, Logout, and Delete account buttons are shown.
+
+<h4>Login</h4>
+The user can login to their account with their username and password.
+
+<h4>Registration</h4>
+The user can register using a password and an username. If there are errors, the same page is shown with the errors in red.
+If the user is register successfully, the login page is shown, so the user can use the new username and password to login.
+At the moment, there is only one type of user: the customer.
+
+<h4>Logout</h4>
+If the customer is logged in, they can press the logout button. If they do, the user is logged out and the homepage is shown.
+
+<h4>Delete account</h4>
+The user can delete their account. If they do and it is successful, a page saying the user was deleted is shown.
+
+<h4>Booking process</h4>
+The first page shown is where the user can select the date. The select is pre-filled with all the dates available which have at least 1 seating space
+available. After the date is selected, the time select is shown, it has a pre-filled select with all the times available of the selected date.
+
+When that is selected, the available shows are shown. For each show, the date, the time and, the title are shown.
+The user then selects one of the available shows. This opens a new page with all the details of the show (date, time, plot and age rating).
+
+The user then selects the Book now button and then a page with all the available tickets is shown (students, adults, children). 
+The user then needs to input all the tickets they want. Once done that, they need to press the button to continue.
+
+Then a page with a short review of the selected tickets is shown, along with the total.
+Once the user is happy with that, they can press the pay button and a custom Stripe url is generated, which will show a review of the tickets and they will need to pay.
+
+FOR THE REVIEWER: in order to test the Stripe payment, you can use this card: 4242 4242 4242 4242, with any ccv, and any date.
+
+Once the user pays and the payment is successful, the success page is shown. In this view, the new booking is added to the booking table and the seating_availability of the showing is updated.
+
+
+
