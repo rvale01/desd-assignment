@@ -117,7 +117,6 @@ def booking_review(request, showing_id):
             
             # If there is enough space, then the template is returned
             if(showing.available_seats >= tot_people):
-                print("Username is 2: ", request.user.id)
                 # Setting values in the session -> these will be used after the payment is confirmed to save them in the db
                 request.session['adults'] = adults
                 request.session['children'] = children
