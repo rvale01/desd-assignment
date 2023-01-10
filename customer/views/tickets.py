@@ -6,11 +6,11 @@ from ..forms import TicketsForm
 def get_total(adults: int, children: int, students: int):
     tot_cost = 0
     if(adults > 0):
-        tot_cost+= (8 * adults)
+        tot_cost+= (8 * adults) # The adults pay £8 pounds each
     if(children > 0):
-        tot_cost+= (4 * children)
+        tot_cost+= (4 * children) # The children pay £4 pounds each
     if(students > 0):
-        tot_cost+= (6 * students)
+        tot_cost+= (6 * students) # The students pay £6 pounds each
     
     return tot_cost
 

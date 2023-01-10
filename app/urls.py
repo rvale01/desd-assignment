@@ -20,6 +20,7 @@ from app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/delete', views.delete_account),
     path('registration/customer', views.registrationCustomer, name = 'registrationCustomer'),
     path('customer/', include("customer.urls")),
     path('', views.homepage)
